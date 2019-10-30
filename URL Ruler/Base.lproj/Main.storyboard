@@ -24,6 +24,11 @@
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem title="Show window" keyEquivalent="1" id="4B5-Da-NYE">
+                                            <connections>
+                                                <action selector="showWindow:" target="Voe-Tx-rLC" id="1tV-Cl-2gO"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Quit URL Ruler" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
@@ -52,12 +57,12 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="mainWindow" id="B8D-0N-5wS" customClass="WindowController" customModule="URL_Ruler" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="244" height="270"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
@@ -68,7 +73,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-43" y="250"/>
+            <point key="canvasLocation" x="-398" y="296"/>
         </scene>
         <!--Panel Controller-->
         <scene sceneID="NmH-nZ-U1m">
@@ -315,23 +320,23 @@ Gw
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="URL_Ruler" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" misplaced="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="248" height="116"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="345"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n2I-y4-Z2E">
-                                <rect key="frame" x="0.0" y="30" width="248" height="36"/>
+                                <rect key="frame" x="0.0" y="30" width="500" height="290"/>
                                 <clipView key="contentView" id="Bno-5l-Tci">
-                                    <rect key="frame" x="1" y="0.0" width="246" height="35"/>
+                                    <rect key="frame" x="1" y="0.0" width="498" height="289"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="lFL-Jf-4l1" viewBased="YES" id="2uT-lu-gvC">
-                                            <rect key="frame" x="0.0" y="0.0" width="246" height="10"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="498" height="264"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="matchingRuleColumn" width="118" minWidth="40" maxWidth="1000" id="ZEM-3G-Xev">
+                                                <tableColumn identifier="matchingRuleColumn" width="231" minWidth="40" maxWidth="1000" id="ZEM-3G-Xev">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="URL Matching Rule">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -345,11 +350,11 @@ Gw
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="cell" id="9jI-cH-bqm">
-                                                            <rect key="frame" x="1" y="1" width="118" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="231" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="roK-ZC-Rfd">
-                                                                    <rect key="frame" x="-2" y="0.0" width="122" height="16"/>
+                                                                    <rect key="frame" x="-2" y="0.0" width="235" height="16"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="rNA-sQ-ceS">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -369,7 +374,7 @@ Gw
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="applicationColumn" width="122" minWidth="40" maxWidth="1000" id="TYy-Ty-8ZN">
+                                                <tableColumn identifier="applicationColumn" width="261" minWidth="40" maxWidth="1000" id="TYy-Ty-8ZN">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Application">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -390,8 +395,12 @@ Gw
                                         </tableView>
                                     </subviews>
                                 </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="Jat-Ln-xCS"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="KFF-qg-Chu"/>
+                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="dOz-1u-qCI">
-                                    <rect key="frame" x="1" y="223" width="246" height="16"/>
+                                    <rect key="frame" x="1" y="116" width="215" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4mt-aj-YB8">
@@ -399,15 +408,15 @@ Gw
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="lFL-Jf-4l1">
-                                    <rect key="frame" x="0.0" y="0.0" width="246" height="25"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="498" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="N8s-WU-VKN">
-                                <rect key="frame" x="0.0" y="0.0" width="248" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="500" height="30"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hif-1W-toV">
-                                        <rect key="frame" x="75" y="-2" width="89" height="32"/>
+                                        <rect key="frame" x="327" y="-2" width="89" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="Ehp-9W-ubT"/>
                                             <constraint firstAttribute="height" constant="21" id="eXK-vs-xUT"/>
@@ -421,7 +430,7 @@ Gw
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zcJ-XS-osv">
-                                        <rect key="frame" x="162" y="-2" width="82" height="32"/>
+                                        <rect key="frame" x="414" y="-2" width="82" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="Eda-GT-A1S"/>
                                             <constraint firstAttribute="height" constant="21" id="owU-j9-nzn"/>
@@ -847,7 +856,7 @@ Gw
                     </items>
                 </menu>
             </objects>
-            <point key="canvasLocation" x="-45" y="631"/>
+            <point key="canvasLocation" x="-398" y="819.5"/>
         </scene>
     </scenes>
 </document>

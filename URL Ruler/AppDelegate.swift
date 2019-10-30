@@ -13,11 +13,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet var statusMenu: NSMenu!
     var statusItem: NSStatusItem!
+    var window: NSWindow?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem.menu = statusMenu
-        statusItem.button?.title = "Ruler"
+        statusItem.button?.image = NSImage(named: NSImage.Name("menuIcon"))
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -31,5 +32,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             print(error)
         }
     }
+
+    @IBAction func showWindow(_ sender: Any) {
+        guard let window = self.window ?? (NSStoryboard.main?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("mainWindow")) as? NSWindowController)?.window else { return }
+        window.makeKeyAndOrderFront(self)
+        window.makeMain()
+    }
 }
 
+class WindowController: NSWindowController {
+    override func windowDidLoad() {
+        super.windowDidLoad()
+        (NSApplication.shared.delegate as? AppDelegate)?.window = self.window
+    }
+}

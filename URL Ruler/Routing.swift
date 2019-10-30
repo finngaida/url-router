@@ -42,17 +42,37 @@ struct Routing {
     }
 
     init() {
-//        guard let data = UserDefaults.standard.data(forKey: "rules") else { rules = []; return }
-//        let optRules = try? PropertyListDecoder().decode([UserURLRule].self, from: data)
+        guard
+            let data = UserDefaults.standard.data(forKey: "rules"),
+            let optRules = try? PropertyListDecoder().decode([UserURLRule].self, from: data)
+            else {
+                rules = [
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "https://www.figma.com",
+                                appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "https://docs.google.com",
+                                appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "https://meet.google.com",
+                                appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "https://kaiahealth.atlassian.net",
+                                appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "https://trello.com",
+                                appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "https://calendar.google.com",
+                                appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
+                    UserURLRule(matchMode: .beginsWith,
+                                pattern: "http",
+                                appURL: URL(fileURLWithPath: "/Applications/Iridium.app")),
+                ]
+                return
+        }
 
-        rules = [
-            UserURLRule(matchMode: .beginsWith,
-                        pattern: "https://google",
-                        appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-            UserURLRule(matchMode: .beginsWith,
-                        pattern: "http",
-                        appURL: URL(fileURLWithPath: "/Applications/Iridium.app")),
-        ]
+        rules = optRules
     }
 
     func execute(_ urls: [URL]) throws {

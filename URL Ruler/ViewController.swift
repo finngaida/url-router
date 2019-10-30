@@ -24,7 +24,8 @@ class ViewController: NSViewController {
 
     @IBAction func removeRule(sender: Any) {
         let selectedIndex = table.selectedRow
-
+        Routing.shared.rules.remove(at: selectedIndex)
+        self.table.reloadData()
     }
 }
 
