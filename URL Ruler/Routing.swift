@@ -15,13 +15,7 @@ enum MatchMode: Int, Codable, CaseIterable {
     case contains
 }
 
-protocol URLRule {
-    var matchMode: MatchMode { get }
-    var pattern: String { get }
-    var appURL: URL { get }
-}
-
-struct UserURLRule: URLRule, Codable {
+struct URLRule: Codable, Hashable {
     let matchMode: MatchMode
     let pattern: String
     let appURL: URL
@@ -34,7 +28,7 @@ enum RoutingError: Error {
 struct Routing {
     static var shared = Routing()
 
-    var rules: [UserURLRule] {
+    var rules: [URLRule] {
         didSet {
             guard let data = try? PropertyListEncoder().encode(rules) else { return }
             UserDefaults.standard.set(data, forKey: "rules")
@@ -44,30 +38,30 @@ struct Routing {
     init() {
         guard
             let data = UserDefaults.standard.data(forKey: "rules"),
-            let optRules = try? PropertyListDecoder().decode([UserURLRule].self, from: data)
+            let optRules = try? PropertyListDecoder().decode([URLRule].self, from: data)
             else {
                 rules = [
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "https://www.figma.com",
                                 appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "https://docs.google.com",
                                 appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "https://meet.google.com",
                                 appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "https://kaiahealth.atlassian.net",
                                 appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "https://trello.com",
                                 appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "https://calendar.google.com",
                                 appURL: URL(fileURLWithPath: "/Applications/Google Chrome.app")),
-                    UserURLRule(matchMode: .beginsWith,
+                    URLRule(matchMode: .beginsWith,
                                 pattern: "http",
-                                appURL: URL(fileURLWithPath: "/Applications/Iridium.app")),
+                                appURL: URL(fileURLWithPath: "/Applications/Iridium.app"))
                 ]
                 return
         }

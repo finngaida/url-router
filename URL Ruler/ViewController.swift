@@ -9,11 +9,11 @@
 import Cocoa
 
 class ViewController: NSViewController {
-
     @IBOutlet var table: NSTableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        table.registerForDraggedTypes([.string])
     }
 
     @IBAction func addRule(sender: Any) {
@@ -30,7 +30,7 @@ class ViewController: NSViewController {
 }
 
 extension ViewController: PanelControllerDelegate {
-    func panelApproved(panel: NSViewController, rule: UserURLRule) {
+    func panelApproved(panel: NSViewController, rule: URLRule) {
         Routing.shared.rules.append(rule)
         table.reloadData()
         dismiss(panel)
@@ -62,10 +62,47 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 
         return view
     }
+
+    func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+        let item = NSPasteboardItem()
+        item.setString("\(Routing.shared.rules[row].hashValue)", forType: .string)
+        return item
+    }
+
+    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
+        switch dropOperation {
+        case .above: return .move
+        case .on: return []
+        @unknown default:
+            fatalError()
+        }
+    }
+
+    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
+        guard
+            let item = info.draggingPasteboard.pasteboardItems?.first,
+            let theString = item.string(forType: .string),
+            let hash = Int(theString),
+            let rule = Routing.shared.rules.first(where: { $0.hashValue == hash }),
+            let originalRow = Routing.shared.rules.firstIndex(of: rule)
+        else { return false }
+
+        var newRow = row
+        // When you drag an item downwards, the "new row" index is actually --1. Remember dragging operation is `.above`.
+        if originalRow < newRow {
+            newRow = row - 1
+        }
+
+        tableView.beginUpdates()
+        tableView.moveRow(at: originalRow, to: newRow)
+        tableView.endUpdates()
+
+        return true
+    }
 }
 
 protocol PanelControllerDelegate: class {
-    func panelApproved(panel: NSViewController, rule: UserURLRule)
+    func panelApproved(panel: NSViewController, rule: URLRule)
 }
 
 class PanelController: NSViewController {
@@ -88,9 +125,27 @@ class PanelController: NSViewController {
         }
     }
 
+    @IBAction func openClicked(sender: Any) {
+        let openPanel = NSOpenPanel()
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseDirectories = false
+        openPanel.canCreateDirectories = false
+        openPanel.canChooseFiles = true
+        openPanel.directoryURL = URL(fileURLWithPath: "~/Applications")
+        openPanel.begin { [unowned self] response in
+            switch response {
+            case .OK:
+                guard let url = openPanel.url else { return }
+                self.applicationField.stringValue = url.path
+
+            default: break
+            }
+        }
+    }
+
     @IBAction func approvePanel(sender: Any) {
         guard let matchRuleIndex = radioButtons.firstIndex(where: { $0.state == .on }) else { return }
-        let rule = UserURLRule(matchMode: MatchMode.allCases[matchRuleIndex],
+        let rule = URLRule(matchMode: MatchMode.allCases[matchRuleIndex],
                                pattern: patternField.stringValue,
                                appURL: URL(fileURLWithPath: applicationField.stringValue))
         delegate?.panelApproved(panel: self, rule: rule)
